@@ -20,38 +20,48 @@ const TodoList = ({
   return (
     <div className="container">
       <Droppable droppableId="TodosList">
-        {(provided) => (
-          <div className="todos" ref={provided.innerRef} {...provided.droppableProps}>
+      {(provided, snapshot) => (
+          <div
+            className={`todos ${snapshot.isDraggingOver ? "dragactive" : ""}`}
+            ref={provided.innerRef}
+            {...provided.droppableProps}
+          >
             <span className="todos__heading">Active Tasks</span>
-            {todos.map((todo,index) => (
+            {todos.map((todo, index) => (
               <SingleTodo
-              index={index}
+                index={index}
                 todo={todo}
                 todos={todos}
                 key={todo.id}
                 settodos={settodos}
               />
             ))}
+            {provided.placeholder}
           </div>
         )}
       </Droppable>
-      <Droppable droppableId="TodosRemove" >
-      {(provided) => (
-        <div className="todos remove" ref={provided.innerRef} {...provided.droppableProps}>
-        <span className="todos__heading">Active Tasks</span>
-        {completedTodo.map((todo,index) => (
-          <SingleTodo
-          index={index}
-            todo={todo}
-            todos={completedTodo}
-            key={todo.id}
-            settodos={setCompletedTodo}
-        
-          />
-        ))}
-      </div>
+      <Droppable droppableId="TodosRemove">
+      {(provided, snapshot) => (
+          <div
+            ref={provided.innerRef}
+            {...provided.droppableProps}
+            className={`todos  ${
+              snapshot.isDraggingOver ? "dragcomplete" : "remove"
+            }`}
+          >
+            <span className="todos__heading">Active Tasks</span>
+            {completedTodo.map((todo, index) => (
+              <SingleTodo
+                index={index}
+                todo={todo}
+                todos={completedTodo}
+                key={todo.id}
+                settodos={setCompletedTodo}
+              />
+            ))}
+            {provided.placeholder}
+          </div>
         )}
-      
       </Droppable>
     </div>
   );

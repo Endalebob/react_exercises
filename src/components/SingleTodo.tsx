@@ -3,6 +3,7 @@ import { Todo } from "../model";
 import { AiFillEdit, AiFillDelete } from "react-icons/ai";
 import { MdDone } from "react-icons/md";
 import { Draggable } from "react-beautiful-dnd";
+import './TodoList'
 
 const SingleTodo = ({
   index,
@@ -42,13 +43,13 @@ const SingleTodo = ({
 
   return (
     <Draggable draggableId={todo.id.toString()} index={index}>
-      {(provided) => (
+      {(provided, snapshot) => (
         <form
-          className="todos__single"
           onSubmit={(e) => handleEdit(e, todo.id)}
-          {...provided.dragHandleProps}
+          {...provided.draggableProps}
           {...provided.dragHandleProps}
           ref={provided.innerRef}
+          className={`todos__single ${snapshot.isDragging ? "drag" : ""}`}
         >
           {edit ? (
             <input
